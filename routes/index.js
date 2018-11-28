@@ -1,33 +1,34 @@
 var express = require('express');
-var router = express.Router();
 var moment = require('moment');
+var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index');
 });
 
-router.get('/:time',function(req,res){
+router.get('/:time', function(req, res){
   var date = req.params.time;
   var unix = null;
-  var normal = null;
+  var natural = null;
+  
   if (+date >=0){
-    unix= +date;
-    normal = unixToNor(unix);
+    unix = +date;
+    natural = unixToNa(unix);
   }
-  if(isNaN(+date) && moment(date, "MMMM D, YYYY").isValid()){
-    unix = norToUnix(date);
-    normal= unixToNor(unix);
+  else if(isNaN(+date) && moment(date, "MMMM D, YYYY").isValid()){
+    unix = naToUnix(date);
+    natural= unixToNa(unix);
   }
-  var dateObj={'unix': unix, 'utc': normal};
+  var dateObj = {'unix': unix, 'utc': natural};
   res.json(dateObj);
-})
+ })
 
-function unixToNor(date){
+function naToUnix(date){
   return moment(date, "MMMM D, YYYY").format("X");
 }
 
-function norToUnix(unix){
+function unixToNa(unix){
   return moment.unix(unix).format("MMMM D, YYYY");
 }
 module.exports = router;
